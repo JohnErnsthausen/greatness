@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3020:3020"
+    volumes:
+      - .:/app
+      - bundle:/usr/local/bundle
+    environment:
+      - BUNDLE_PATH=/usr/local/bundle
+    command: bundle exec rackup -s puma --host 0.0.0.0 -p 3020 -O Verbose=true config.ru
+
+  apache:
+    build:
+      context: ./apache
+      dockerfile: Dockerfile
+    ports:
+      - "443:443"
+      - "80:80"
+    depends_on:
+      - app
+
+volumes:
+  bundle:

@@ -1,0 +1,19 @@
+<VirtualHost *:80>
+  ServerAdmin john@smartypixels.com
+  ServerName mercercountybuilders.com
+  ServerAlias www.mercercountybuilders.com
+  Redirect permanent / https://www.mercercountybuilders.com
+</VirtualHost>
+<VirtualHost _default_:443>
+  ServerName mercercountybuilders.com
+  ServerAlias www.mercercountybuilders.com
+
+  ProxyPreserveHost On
+  ProxyRequests Off
+  ProxyPass / http://mercercountybuilders.com:3020/
+  ProxyPassReverse / http://mercercountybuilders.com:3020/
+
+  LogLevel warn
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
